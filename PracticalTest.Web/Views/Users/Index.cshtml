@@ -1,0 +1,172 @@
+﻿@model IEnumerable<PracticalTest.Web.ViewModels.UserViewModel>
+
+@{
+    ViewBag.Title = "Index";
+}
+<link href="~/Content/DataTables/datatables.min.css" rel="stylesheet" />
+<script src="~/Content/DataTables/datatables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        ////Datatable
+        //$('#pageTable').DataTable({
+        //    "bAutoWidth": false,
+        //    "aoColumns": [
+        //        { sWidth: '15%' },
+        //        { sWidth: '15%' },
+        //        { sWidth: '10%' },
+        //        { sWidth: '10%' }
+        //    ],
+        //    "aoColumnDefs": [
+        //        {
+        //            "bSortable": false,
+        //            "aTargets": [1, 2, 3]
+        //        },
+        //        {
+        //            "bSearchable": false,
+        //            "aTargets": [1, 2, 3]
+        //        }
+        //    ]
+        //});
+
+        $($.fn.dataTable.tables(true)).DataTable()
+            .columns.adjust();
+
+        $(document).on('click', 'a.DeleteItem', function () {
+            var r = confirm("Are you sure you want to delete record ?");
+            if (r == true) {
+                debugger;
+                $.ajax({
+                    type: 'POST',
+                    url: '/users/Delete',
+                    cache: false,
+                    data: { id: $(this).data('id') },
+                    success: function (data) {
+                        debugger;
+                        var msgType = '';
+                        var msg = ''
+                        if (data != '') {
+                            msg = data;
+                            if (msg.includes('User has been deleted successfully.')) {
+                                msgType = 'success';
+                            }
+                            else {
+                                msgType = 'warning';
+                            }
+                            swal.fire({
+                                title: '',
+                                text: data,
+                                icon: msgType
+                            }).then(function () {
+                                window.location.reload();
+                            })
+                        }
+                    }
+                });
+            }
+            else {
+                swal.fire({
+                    title: '',
+                    text: 'You clicked on Cancel.',
+                    icon: 'warning',
+                })
+            }
+        });
+    });
+</script>
+
+<p>
+    <a href="@Url.Action("CreateUpdate", "Users")" class="btn btn-primary" style="float:right; margin-top:10px; margin-bottom:10px;">Create</a>
+</p>
+<table id="pageTable" class="table table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Birthdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Age)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            Profile
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RoleId)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Birthdate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Age)
+            </td>
+            <td>
+                @if (item.Gender.Trim() == "M")
+                {
+                    <span>Male</span>
+                }
+                else
+                {
+                    <span>Female</span>
+                }
+            </td>
+            <td>
+                <img src="@(Url.Content(item.ProfileUrl))" height="100" width="100" />
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoleId)
+            </td>
+            <td>
+                <a href='@Url.Action("CreateUpdate", "Users", new { id = item.Id })' class="btn btn-link">
+                    Edit
+                </a>|
+                <a class="btn btn-link DeleteItem" data-id="@item.Id" title="Delete">
+                    Delete
+                </a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    @if(TempData["Message"] != null) {
+        <text>
+            $(window).on('load',function()
+                {
+                $(document).ready(function()
+                    {
+                    swal.fire({
+                        title: "Message",
+                        text: "@TempData["Message"]",
+                        icon: "@TempData["status"]"
+                    });
+                });
+            });
+    </text>
+    }
+</script>

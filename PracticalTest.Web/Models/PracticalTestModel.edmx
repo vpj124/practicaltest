@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PracticalTestModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_rolemaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_usermaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Birthdate" Type="date" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="10" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Gender" Type="char" MaxLength="1" />
+          <Property Name="RoleId" Type="int" />
+          <Property Name="ProfileUrl" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedAt" Type="datetime" />
+          <Property Name="UpdatedAt" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_tbl_usermaster_tbl_rolemaster">
+          <End Role="tbl_rolemaster" Type="Self.tbl_rolemaster" Multiplicity="0..1" />
+          <End Role="tbl_usermaster" Type="Self.tbl_usermaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_rolemaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_usermaster">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PracticalTestModelStoreContainer">
+          <EntitySet Name="tbl_rolemaster" EntityType="Self.tbl_rolemaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_usermaster" EntityType="Self.tbl_usermaster" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbl_usermaster_tbl_rolemaster" Association="Self.FK_tbl_usermaster_tbl_rolemaster">
+            <End Role="tbl_rolemaster" EntitySet="tbl_rolemaster" />
+            <End Role="tbl_usermaster" EntitySet="tbl_usermaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PracticalTestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_rolemaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="tbl_usermaster" Relationship="PracticalTestModel.FK_tbl_usermaster_tbl_rolemaster" FromRole="tbl_rolemaster" ToRole="tbl_usermaster" />
+        </EntityType>
+        <EntityContainer Name="PracticalTestEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_rolemaster" EntityType="Self.tbl_rolemaster" />
+          <EntitySet Name="tbl_usermaster" EntityType="PracticalTestModel.tbl_usermaster" />
+          <AssociationSet Name="FK_tbl_usermaster_tbl_rolemaster" Association="PracticalTestModel.FK_tbl_usermaster_tbl_rolemaster">
+            <End Role="tbl_rolemaster" EntitySet="tbl_rolemaster" />
+            <End Role="tbl_usermaster" EntitySet="tbl_usermaster" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="tbl_usermaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Birthdate" Type="DateTime" Precision="0" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Mobile" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Gender" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="RoleId" Type="Int32" />
+          <Property Name="ProfileUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tbl_rolemaster" Relationship="PracticalTestModel.FK_tbl_usermaster_tbl_rolemaster" FromRole="tbl_usermaster" ToRole="tbl_rolemaster" />
+        </EntityType>
+        <Association Name="FK_tbl_usermaster_tbl_rolemaster">
+          <End Type="PracticalTestModel.tbl_rolemaster" Role="tbl_rolemaster" Multiplicity="0..1" />
+          <End Type="PracticalTestModel.tbl_usermaster" Role="tbl_usermaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_rolemaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tbl_usermaster">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PracticalTestModelStoreContainer" CdmEntityContainer="PracticalTestEntities">
+          <EntitySetMapping Name="tbl_rolemaster">
+            <EntityTypeMapping TypeName="PracticalTestModel.tbl_rolemaster">
+              <MappingFragment StoreEntitySet="tbl_rolemaster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_usermaster">
+            <EntityTypeMapping TypeName="PracticalTestModel.tbl_usermaster">
+              <MappingFragment StoreEntitySet="tbl_usermaster">
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ProfileUrl" ColumnName="ProfileUrl" />
+                <ScalarProperty Name="RoleId" ColumnName="RoleId" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Birthdate" ColumnName="Birthdate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
